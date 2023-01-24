@@ -1,6 +1,6 @@
 <script>
     const load = (async () => {
-        const response =  await fetch('/api/autoRefresh/logs')
+        const response =  await fetch('/api/*/logs')
         const data = await response.json()
         return data
     })()
@@ -12,15 +12,20 @@
 {:then logs}
     <table>
         <tr>
+            <td>ID</td>
             <th>Date</th>
             <th>Test</th>
             <th>Result</th>
         </tr>
-    {#each logs.reverse() as { date, name, result }}
+    {#each logs.reverse() as { _id, date, name, result, message }}
         <tr>
+            <td>{_id}</td>
             <td>{(new Date(date)).toISOString().split('T')[0]}</td>
             <td>{name}</td>
-            <td>{#if result === 1}✅{:else}❌{/if}</td>
+            <td>{#if result === 0}⏳{:else if result === 1}❌{:else if result === 2}✅{/if}</td>
+            {#if message}
+            <td>{message}</td>
+            {/if}
         </tr>
     {/each}
     </table>
