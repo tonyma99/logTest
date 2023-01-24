@@ -11,9 +11,9 @@ export async function POST({ params }) {
         console.log(`A document was inserted with the _id: ${result.insertedId}`);
     } catch (e) {
         console.log(e)
-        return new Response({ status: 500 })
+        return new Response(JSON.stringify({ status: 500 }))
     }
     
     
-    return new Response({ status: 201 })
+    return new Response(JSON.stringify({ status: 201 }))
 }
