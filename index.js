@@ -14,7 +14,7 @@ const connectToDatabase = async () => {
     }
 
     const client = await MongoClient.connect(MONGODB_URI);
-    const db = client.db('nightwatchLogs');
+    const db = client.db(process.env.MONGODB_DB);
     cachedDb = db;
     return db;
 }
@@ -29,7 +29,7 @@ const log = async (params) => {
     try {
         const { name, key } = params;
         const db = await connectToDatabase();
-        const logs = db.collection('logs');
+        const logs = db.collection(process.env.MONGODB_COLLECTION);
         
         if (!name && key) {
             return clientError;
@@ -79,7 +79,7 @@ const log = async (params) => {
 const getLogs = async () => {
     try {
         const db = await connectToDatabase();
-        const logs = await db.collection('logs').find({}).toArray();
+        const logs = await db.collection(process.env.MONGODB_COLLECTION).find({}).toArray();
 
         return {
             statusCode: 200,
